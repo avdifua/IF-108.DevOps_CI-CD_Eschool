@@ -21,8 +21,12 @@ install_inotify-tools() {
 
 setup_cicd_work_dir(){
 
-	sudo mkdir -p /opt/frontend_eschool/www_frontend/dist/eSchool
-	mkdir /opt/frontend_eschool/tar
+	sudo mkdir -p /opt/frontend_eschool/tar
+	sudo chown -R al:al /opt/frontend_eschool
+	sudo mkdir -p /opt/www_frontend/dist/eSchool
+	sudo chown -R nginx:nginx /opt/www_frontend
+	sudo chmod 766 -R /opt/frontend_eschool
+	sudo chmod 766 -R /opt/www_frontend
 }
 
 setup_virtual_host() {
@@ -41,10 +45,8 @@ server {
 _EOF
 
 	sudo mkdir /var/www
-	sudo ln -s /opt/frontend_eschool/www_frontend/dist/eSchool /var/www
+	sudo ln -s /opt/www_frontend/dist/eSchool /var/www
 	sudo sed -i -e "s|default_server;|;|g" /etc/nginx/nginx.conf
-	sudo chown -R nginx:nginx /opt/frontend_eschool/www_frontend/
-	sudo chmod 766 -R /opt/frontend_eschool/www_frontend/
 	sudo systemctl restart nginx
 }
 
@@ -81,9 +83,10 @@ SRC_DIR="/opt/frontend_eschool/tar"
 
 make_action(){
 
-sudo tar -xf /opt/frontend_eschool/tar/backend_eschool_full.tar.gz -C www_frontend
-sudo chown -R nginx:nginx /opt/frontend_eschool/www_frontend
-sudo chmod 766 -R /opt/frontend_eschool/www_frontend
+sudo tar -xf /opt/frontend_eschool/tar/backend_eschool_full.tar.gz -C /opt/www_frontend
+sudo chown -R al:al /opt/frontend_eschool
+sudo chown -R nginx:nginx /opt/www_frontend
+sudo chmod 766 -R /opt/www_frontend
 sudo systemctl restart watch_frontend_eschool
 }
 
@@ -105,8 +108,7 @@ _EOF
 
 up_service(){
 
-    sudo chown -R nginx:nginx /opt/frontend_eschool
-    sudo systemctl daemon-reload
+	sudo systemctl daemon-reload
     sudo systemctl enable watch_frontend_eschool
     sudo systemctl start watch_frontend_eschool
 }
