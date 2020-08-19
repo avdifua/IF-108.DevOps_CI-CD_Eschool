@@ -6,7 +6,7 @@ Vagrantfile describes the type of instances, region, network, IP, OS. Bash scrip
 
 Scheme of infrastructure:
 
-![alt text](https://i.imgur.com/K3ebSGx.jpg)
+![alt text](https://i.imgur.com/6rhFDsR.jpg)
 
 What you need to change what would run on your machine.
 
