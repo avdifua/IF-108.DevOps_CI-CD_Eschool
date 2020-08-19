@@ -1,0 +1,61 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>1</daysToKeep>
+        <numToKeep>3</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <jenkins.triggers.ReverseBuildTrigger>
+      <spec></spec>
+      <upstreamProjects>Build_frontend_Eschool</upstreamProjects>
+      <threshold>
+        <name>SUCCESS</name>
+        <ordinal>0</ordinal>
+        <color>BLUE</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+    </jenkins.triggers.ReverseBuildTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.45.1">
+      <project>Build_frontend_Eschool</project>
+      <filter></filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>FILE=backend_eschool_full.tar.gz
+if [ -f &quot;$FILE&quot; ]; then
+    rm -rf $FILE
+	cp .htaccess dist/eSchool/
+	tar -czvf backend_eschool_full.tar.gz **
+	rsync -ave &quot;ssh -o StrictHostKeyChecking=no&quot; backend_eschool_full.tar.gz al@10.156.0.31:/opt/frontend_eschool/tar
+    rsync -ave &quot;ssh -o StrictHostKeyChecking=no&quot; backend_eschool_full.tar.gz al@10.156.0.32:/opt/frontend_eschool/tar
+else 
+    cp .htaccess dist/eSchool/
+	tar -czvf backend_eschool_full.tar.gz **
+	rsync -ave &quot;ssh -o StrictHostKeyChecking=no&quot; backend_eschool_full.tar.gz al@10.156.0.31:/opt/frontend_eschool/tar
+    rsync -ave &quot;ssh -o StrictHostKeyChecking=no&quot; backend_eschool_full.tar.gz al@10.156.0.32:/opt/frontend_eschool/tar
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
