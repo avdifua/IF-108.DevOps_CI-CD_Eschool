@@ -83,7 +83,7 @@ SRC_DIR="/opt/frontend_eschool/tar"
 
 make_action(){
 
-sudo tar -xf /opt/frontend_eschool/tar/backend_eschool_full.tar.gz -C /opt/www_frontend
+sudo tar -xf /opt/frontend_eschool/tar/frontend_eschool_full.tar.gz -C /opt/www_frontend
 sudo chown -R al:al /opt/frontend_eschool
 sudo chown -R nginx:nginx /opt/www_frontend
 sudo chmod 766 -R /opt/www_frontend
